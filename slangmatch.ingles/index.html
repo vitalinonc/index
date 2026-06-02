@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Slang Match</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#bff3ff,#ffd7f4,#d9cbff);
+    overflow:hidden;
+    height:100vh;
+    color:#222;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,#ffffff99 0%,transparent 25%),
+    radial-gradient(circle at bottom right,#ffffff77 0%,transparent 25%);
+    z-index:-1;
+}
+
+/* stars */
+
+.stars{
+    position:absolute;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.star{
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:white;
+    border-radius:50%;
+    animation:blink 3s infinite;
+}
+
+@keyframes blink{
+    0%,100%{opacity:.2;}
+    50%{opacity:1;}
+}
+
+/* screens */
+
+.screen{
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    text-align:center;
+}
+
+/* title */
+
+h1{
+    font-family:'Press Start 2P',cursive;
+    font-size:3rem;
+    color:#ff1493;
+
+    text-shadow:
+    3px 3px 0 white,
+    6px 6px 0 #00d9ff;
+
+    margin-bottom:25px;
+}
+
+.subtitle{
+    max-width:700px;
+    line-height:1.8;
+}
+
+/* intro */
+
+.intro-box{
+
+    margin-top:25px;
+    max-width:750px;
+    background:#ffffffcc;
+    border:3px solid white;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 0 25px white;
+    backdrop-filter:blur(10px);
+
+}
+
+.intro-box h2{
+
+    margin-bottom:15px;
+    color:#ff1493;
+
+}
+
+.members{
+
+    margin-top:20px;
+    background:white;
+    border-radius:18px;
+    padding:15px;
+
+}
+
+.members h3{
+
+    margin-bottom:10px;
+    color:#00a2ff;
+
+}
+
+/* buttons */
+
+button{
+
+    border:none;
+    cursor:pointer;
+    transition:.2s;
+    font-weight:700;
+
+}
+
+.start-btn,
+.option{
+
+    background:linear-gradient(180deg,#ffffff,#daf7ff);
+    border:3px solid white;
+    border-radius:18px;
+    padding:15px 20px;
+
+    box-shadow:
+    0 4px 0 #00a2ff,
+    0 0 20px #ffffffaa;
+
+}
+
+.start-btn{
+
+    margin-top:25px;
+    font-size:1rem;
+
+}
+
+.start-btn:hover,
+.option:hover{
+
+    transform:translateY(-4px) scale(1.03);
+    background:linear-gradient(180deg,#fff7aa,#ffd4f3);
+
+}
+
+/* top bar */
+
+.top-bar{
+
+    position:absolute;
+    top:20px;
+    display:flex;
+    gap:20px;
+
+}
+
+.score,
+.level{
+
+    background:#ffffffaa;
+    padding:12px 18px;
+    border-radius:15px;
+    border:2px solid white;
+    box-shadow:0 0 15px white;
+    font-weight:600;
+
+}
+
+/* progress */
+
+.progress-container{
+
+    width:360px;
+    height:18px;
+    background:#ffffff99;
+    border-radius:20px;
+    overflow:hidden;
+    border:2px solid white;
+    margin-bottom:20px;
+
+}
+
+.progress{
+
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#00d9ff,#ff4fd8);
+    transition:.4s;
+
+}
+
+/* phase */
+
+.phase{
+
+    margin-bottom:15px;
+    background:white;
+    padding:10px 18px;
+    border-radius:20px;
+    border:2px solid white;
+    font-weight:700;
+    box-shadow:0 0 15px white;
+
+}
+
+/* card */
+
+.card{
+
+    width:390px;
+    background:#ffffffdd;
+    border-radius:30px;
+    overflow:hidden;
+    border:4px solid white;
+
+    box-shadow:
+    0 10px 30px #7ad8ff66,
+    0 0 30px white;
+
+    animation:float 3s infinite ease-in-out;
+
+}
+
+@keyframes float{
+
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+    100%{transform:translateY(0);}
+
+}
+
+.card img{
+
+    width:100%;
+    height:260px;
+    object-fit:cover;
+
+}
+
+.card-content{
+
+    padding:22px;
+
+}
+
+.question{
+
+    font-size:1.1rem;
+    font-weight:700;
+    margin-bottom:15px;
+
+}
+
+.translation{
+
+    font-size:.9rem;
+    color:#555;
+    margin-bottom:18px;
+
+}
+
+/* options */
+
+.options{
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+}
+
+.option{
+
+    font-size:.95rem;
+
+}
+
+/* feedback */
+
+.correct-answer{
+
+    background:#8cffb2 !important;
+    color:black !important;
+
+}
+
+.wrong-answer{
+
+    background:#ff9bb0 !important;
+    color:black !important;
+
+}
+
+.result{
+
+    margin-top:18px;
+    min-height:35px;
+    font-size:1.1rem;
+    font-weight:700;
+
+}
+
+/* end review */
+
+.review-box{
+
+    margin-top:25px;
+    width:90%;
+    max-width:850px;
+    max-height:320px;
+    overflow-y:auto;
+    background:#ffffffdd;
+    border-radius:25px;
+    padding:20px;
+    border:3px solid white;
+    text-align:left;
+
+}
+
+.review-item{
+
+    background:white;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:18px;
+
+}
+
+.review-item.correct{
+
+    border-left:8px solid #00c853;
+
+}
+
+.review-item.wrong{
+
+    border-left:8px solid #ff1744;
+
+}
+
+.hidden{
+
+    display:none;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<!-- TOP BAR -->
+
+<div class="top-bar hidden" id="topBar">
+
+    <div class="score" id="score">
+        ⭐ Score: 0
+    </div>
+
+    <div class="level" id="level">
+        Level 1
+    </div>
+
+</div>
+
+<!-- HOME -->
+
+<div class="screen" id="home">
+
+    <h1>SLANG MATCH</h1>
+
+    <p class="subtitle">
+        Learn internet slang with a chaotic Y2K vibe 💿✨
+    </p>
+
+    <div class="intro-box">
+
+        <h2>🎮 ABOUT THE GAME / SOBRE O JOGO</h2>
+
+        <p>
+            <b>EN:</b><br>
+            Welcome to Slang Match — a game inspired by
+            internet culture and 2000s computer aesthetics.
+            Match slang expressions with situations and
+            test your Gen Z vocabulary.
+        </p>
+
+        <br>
+
+        <p>
+            <b>PT-BR:</b><br>
+            Bem-vindo ao Slang Match — um jogo inspirado
+            na cultura da internet e nos computadores
+            dos anos 2000.
+            <br><br>
+            O objetivo é relacionar gírias em inglês
+            com situações do cotidiano e aprender
+            expressões populares usadas na internet.
+        </p>
+
+        <div class="members">
+
+            <h3>💿 Developed by / Desenvolvido por:</h3>
+
+            <p>
+                ✨ Eloá Aquino<br>
+                ✨ Marcelo Junior<br>
+                ✨ Nicolly Vitalino<br>
+                ✨ Sophia Teles
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="start-btn" onclick="startGame()">
+        START GAME 💿
+    </button>
+
+</div>
+
+<!-- GAME -->
+
+<div class="screen hidden" id="game">
+
+    <div class="phase" id="phase">
+        PHASE 1
+    </div>
+
+    <div class="progress-container">
+
+        <div class="progress" id="progress"></div>
+
+    </div>
+
+    <div class="card">
+
+        <img id="image" src="">
+
+        <div class="card-content">
+
+            <div class="question" id="question"></div>
+
+            <div class="translation" id="translation"></div>
+
+            <div class="options" id="options"></div>
+
+            <div class="result" id="result"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- END -->
+
+<div class="screen hidden" id="end">
+
+    <h1 id="finalTitle"></h1>
+
+    <p class="subtitle" id="finalText"></p>
+
+    <button class="start-btn" onclick="location.reload()">
+        PLAY AGAIN ✨
+    </button>
+
+</div>
+
+<script>
+
+/* shuffle */
+
+function shuffleArray(array){
+
+let newArray = [...array];
+
+for(let i = newArray.length - 1; i > 0; i--){
+
+const j = Math.floor(Math.random() * (i + 1));
+
+[newArray[i], newArray[j]] =
+[newArray[j], newArray[i]];
+
+}
+
+return newArray;
+
+}
+
+/* questions */
+
+const questions = [
+
+{
+phase:"PHASE 1 — BASIC INTERNET",
+image:"https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800",
+question:"That outfit is super expensive and flashy.",
+translation:"Tradução aproximada: cheio de joias / luxuoso",
+options:shuffleArray([
+"iced out",
+"bummer",
+"mate"
+]),
+answer:"iced out",
+explanation:
+"'Iced out' é usado quando alguém está usando roupas ou acessórios caros e cheios de joias."
+},
+
+{
+phase:"PHASE 1 — BASIC INTERNET",
+image:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800",
+question:"Your friend cancelled plans again last minute.",
+translation:"Tradução aproximada: furar / desmarcar",
+options:shuffleArray([
+"to flake",
+"valid",
+"rent-free"
+]),
+answer:"to flake",
+explanation:
+"'To flake' significa cancelar planos ou desistir em cima da hora."
+},
+
+{
+phase:"PHASE 2 — CHAOTIC ENERGY",
+image:"https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800",
+question:"Someone revealed your secret to everyone.",
+translation:"Tradução aproximada: contar segredo",
+options:shuffleArray([
+"to spill the beans",
+"deadass",
+"lowkey"
+]),
+answer:"to spill the beans",
+explanation:
+"'To spill the beans' significa revelar um segredo."
+},
+
+{
+phase:"PHASE 2 — CHAOTIC ENERGY",
+image:"https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800",
+question:"This person acts like life is a movie about them.",
+translation:"Tradução aproximada: síndrome de protagonista",
+options:shuffleArray([
+"main character energy",
+"wildin",
+"big mad"
+]),
+answer:"main character energy",
+explanation:
+"'Main character energy' descreve alguém que age como protagonista."
+},
+
+{
+phase:"PHASE 3 — SOCIAL DISASTERS",
+image:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800",
+question:"Bro is EXTREMELY angry right now.",
+translation:"Tradução aproximada: muito bravo",
+options:shuffleArray([
+"big mad",
+"mate",
+"no biggie"
+]),
+answer:"big mad",
+explanation:
+"'Big mad' é usado quando alguém está extremamente bravo."
+},
+
+{
+phase:"FINAL PHASE — MASTER",
+image:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800",
+question:"Someone is acting completely insane in public.",
+translation:"Tradução aproximada: surtando",
+options:shuffleArray([
+"wildin",
+"to sit tight",
+"deadass"
+]),
+answer:"wildin",
+explanation:
+"'Wildin' significa agir de forma maluca ou exagerada."
+}
+
+];
+
+/* variables */
+
+let currentQuestion = 0;
+let score = 0;
+let review = [];
+
+/* start */
+
+function startGame(){
+
+document.getElementById("home")
+.classList.add("hidden");
+
+document.getElementById("game")
+.classList.remove("hidden");
+
+document.getElementById("topBar")
+.classList.remove("hidden");
+
+loadQuestion();
+
+}
+
+/* load question */
+
+function loadQuestion(){
+
+const q = questions[currentQuestion];
+
+document.getElementById("image").src =
+q.image;
+
+document.getElementById("question")
+.innerText = q.question;
+
+document.getElementById("translation")
+.innerText = q.translation;
+
+document.getElementById("phase")
+.innerText = q.phase;
+
+const optionsContainer =
+document.getElementById("options");
+
+optionsContainer.innerHTML = "";
+
+document.getElementById("result")
+.innerHTML = "";
+
+q.options.forEach(option=>{
+
+const btn =
+document.createElement("button");
+
+btn.classList.add("option");
+
+btn.innerText = option;
+
+btn.onclick = ()=>checkAnswer(option);
+
+optionsContainer.appendChild(btn);
+
+});
+
+updateProgress();
+
+}
+
+/* answer */
+
+function checkAnswer(selected){
+
+const correct =
+questions[currentQuestion].answer;
+
+const result =
+document.getElementById("result");
+
+const buttons =
+document.querySelectorAll(".option");
+
+buttons.forEach(btn=>{
+
+btn.disabled = true;
+
+if(btn.innerText === correct){
+
+btn.classList.add("correct-answer");
+
+}
+
+if(
+btn.innerText === selected &&
+selected !== correct
+){
+
+btn.classList.add("wrong-answer");
+
+}
+
+});
+
+if(selected === correct){
+
+result.innerHTML = "✅ CORRECT!";
+result.style.color = "#00c853";
+
+score++;
+
+}else{
+
+result.innerHTML =
+`❌ WRONG! Correct answer: ${correct}`;
+
+result.style.color = "#ff1744";
+
+}
+
+review.push({
+
+question:
+questions[currentQuestion].question,
+
+selected:selected,
+
+correct:correct,
+
+explanation:
+questions[currentQuestion].explanation,
+
+isCorrect:selected===correct
+
+});
+
+document.getElementById("score")
+.innerHTML =
+"⭐ Score: " + score;
+
+document.getElementById("level")
+.innerHTML =
+"Level " + (currentQuestion + 1);
+
+currentQuestion++;
+
+setTimeout(()=>{
+
+if(currentQuestion < questions.length){
+
+loadQuestion();
+
+}else{
+
+endGame();
+
+}
+
+},2200);
+
+}
+
+/* progress */
+
+function updateProgress(){
+
+const progress =
+(currentQuestion / questions.length) * 100;
+
+document.getElementById("progress")
+.style.width = progress + "%";
+
+}
+
+/* end */
+
+function endGame(){
+
+document.getElementById("game")
+.classList.add("hidden");
+
+document.getElementById("topBar")
+.classList.add("hidden");
+
+document.getElementById("end")
+.classList.remove("hidden");
+
+let title = "";
+let text = "";
+
+if(score <= 2){
+
+title = "NPC ENERGY 💀";
+text = "The internet defeated you.";
+
+}
+else if(score <= 4){
+
+title = "CHRONICALLY ONLINE 😎";
+text = "You understand internet slang pretty well.";
+
+}
+else{
+
+title = "Y2K SLANG GOD ✨";
+text = "You officially survived the internet.";
+
+}
+
+document.getElementById("finalTitle")
+.innerText = title;
+
+document.getElementById("finalText")
+.innerText = text;
+
+/* review */
+
+const reviewBox =
+document.createElement("div");
+
+reviewBox.classList.add("review-box");
+
+reviewBox.innerHTML =
+"<h2>📋 YOUR ANSWERS</h2><br>";
+
+review.forEach(item=>{
+
+const div =
+document.createElement("div");
+
+div.classList.add("review-item");
+
+div.classList.add(
+item.isCorrect ? "correct" : "wrong"
+);
+
+div.innerHTML = `
+
+<b>Question:</b>
+${item.question}<br><br>
+
+<b>Your answer:</b>
+${item.selected}<br>
+
+<b>Correct answer:</b>
+${item.correct}<br><br>
+
+<b>Explanation:</b><br>
+${item.explanation}<br><br>
+
+${item.isCorrect ? "✅ Correct" : "❌ Wrong"}
+
+`;
+
+reviewBox.appendChild(div);
+
+});
+
+document.getElementById("end")
+.appendChild(reviewBox);
+
+}
+
+/* stars */
+
+for(let i = 0; i < 40; i++){
+
+const star =
+document.createElement("div");
+
+star.classList.add("star");
+
+star.style.left =
+Math.random() * 100 + "%";
+
+star.style.top =
+Math.random() * 100 + "%";
+
+star.style.animationDelay =
+Math.random() * 3 + "s";
+
+document.getElementById("stars")
+.appendChild(star);
+
+}
+
+</script>
+
+</body>
+</html>
+```
